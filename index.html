@@ -1,13 +1,735 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta http-equiv="refresh" content="0; url=vaulty-daily-plan.html">
-  <title>Vaulty Daily Plan</title>
-  <script>window.location.replace('vaulty-daily-plan.html');</script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Vaulty — 8-Week Build Plan</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,'DM Sans',sans-serif;background:#F8F5EE;color:#111827;line-height:1.5;font-size:14px}
+.hdr{background:#0D1F4E;padding:16px 16px 0;position:sticky;top:0;z-index:100;box-shadow:0 2px 12px rgba(13,31,78,0.3)}
+.hdr-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
+.hdr-title{font-size:15px;font-weight:700;color:#fff}
+.hdr-pct{font-size:12px;color:rgba(255,255,255,0.55);font-weight:600}
+.pbar{height:3px;background:rgba(255,255,255,0.12);border-radius:2px;margin-bottom:10px}
+.pbar-fill{height:100%;background:#C9A84C;border-radius:2px;transition:width .4s}
+.wtabs{display:flex;gap:0;overflow-x:auto;scrollbar-width:none}
+.wtabs::-webkit-scrollbar{display:none}
+.wtab{flex-shrink:0;padding:8px 12px;font-size:11px;font-weight:700;color:rgba(255,255,255,0.45);cursor:pointer;border:none;background:none;border-bottom:2px solid transparent;transition:all .2s;text-transform:uppercase;letter-spacing:.06em;white-space:nowrap}
+.wtab.on{color:#C9A84C;border-bottom-color:#C9A84C}
+.wtab:hover:not(.on){color:rgba(255,255,255,.75)}
+.main{max-width:760px;margin:0 auto;padding:18px 14px 80px}
+.wsec{display:none}.wsec.on{display:block}
+.whdr{background:#0D1F4E;border-radius:12px;padding:16px 18px;margin-bottom:14px}
+.wbadge{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:#C9A84C;margin-bottom:3px}
+.wtitle{font-size:17px;font-weight:700;color:#fff;margin-bottom:4px}
+.wgoal{font-size:12px;color:rgba(255,255,255,.6);line-height:1.5}
+.wbar{height:3px;background:rgba(201,168,76,.2);border-radius:2px;margin-top:10px}
+.wbar-fill{height:100%;background:#C9A84C;border-radius:2px;transition:width .4s}
+.wpct{font-size:10px;color:rgba(255,255,255,.4);margin-top:5px;text-align:right}
+.dcard{background:#fff;border-radius:12px;margin-bottom:8px;overflow:hidden;border:1px solid #E5E7EB;transition:box-shadow .2s}
+.dcard.done-all{border-color:#A7F3D0}
+.dhdr{padding:12px 14px;cursor:pointer;display:flex;align-items:center;gap:10px;user-select:none}
+.dhdr:hover{background:#F9FAFB}
+.dnum{width:30px;height:30px;border-radius:8px;background:#0D1F4E;color:#C9A84C;font-size:12px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.dcard.done-all .dnum{background:#059669;color:#fff}
+.dinfo{flex:1;min-width:0}
+.dday{font-size:10px;font-weight:700;color:#9CA3AF;text-transform:uppercase;letter-spacing:.06em}
+.dtitle{font-size:13px;font-weight:600;color:#111827}
+.dtag{font-size:10px;font-weight:700;color:#059669;background:#D1FAE5;padding:2px 8px;border-radius:20px}
+.dchev{font-size:18px;color:#D1D5DB;transition:transform .2s;margin-left:4px}
+.dcard.open .dchev{transform:rotate(180deg)}
+.dbody{display:none;padding:0 14px 14px;border-top:1px solid #F3F4F6}
+.dcard.open .dbody{display:block}
+.sec-lbl{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;padding:3px 10px;border-radius:20px;display:inline-block;margin:10px 0 6px}
+.lbl-d{background:#DBEAFE;color:#1E40AF}
+.lbl-l{background:#D1FAE5;color:#065F46}
+.lbl-c{background:#FEF3C7;color:#92400E}
+.titem{display:flex;align-items:flex-start;gap:9px;padding:7px 0;border-bottom:1px solid #F9FAFB}
+.titem:last-child{border-bottom:none}
+.tcheck{width:17px;height:17px;border-radius:4px;border:1.5px solid #D1D5DB;cursor:pointer;flex-shrink:0;margin-top:1px;appearance:none;-webkit-appearance:none;background:#fff;transition:all .15s;position:relative}
+.tcheck:checked{background:#0D1F4E;border-color:#0D1F4E}
+.tcheck:checked::after{content:'✓';position:absolute;top:0;left:0;right:0;bottom:0;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:#C9A84C}
+.ttxt{flex:1;font-size:12.5px;color:#374151;line-height:1.55}
+.titem.ck .ttxt{text-decoration:line-through;color:#9CA3AF}
+.tmin{font-size:10px;color:#9CA3AF;flex-shrink:0;margin-top:2px}
+.dact{display:flex;justify-content:space-between;align-items:center;margin-top:10px;padding-top:8px;border-top:1px solid #F3F4F6}
+.dact-pct{font-size:11px;color:#6B7280}
+.btn-all{font-size:11px;font-weight:600;padding:4px 12px;border-radius:6px;cursor:pointer;border:1px solid #E5E7EB;background:#F9FAFB;color:#374151}
+.btn-all:hover{background:#E5E7EB}
+.rest{text-align:center;padding:16px;color:#9CA3AF;font-size:12px;font-style:italic}
+.today-btn{position:fixed;bottom:18px;right:14px;background:#C9A84C;color:#0D1F4E;border:none;border-radius:20px;padding:9px 16px;font-size:12px;font-weight:700;cursor:pointer;box-shadow:0 4px 14px rgba(201,168,76,0.4);z-index:200}
+.today-btn:hover{background:#B8952F}
+.legend{display:flex;gap:12px;padding:10px 14px;background:#fff;border-bottom:1px solid #E5E7EB;flex-wrap:wrap}
+.leg{display:flex;align-items:center;gap:5px;font-size:11px;font-weight:600}
+.leg-dot{width:9px;height:9px;border-radius:3px}
+</style>
 </head>
 <body>
-  <p><a href="vaulty-daily-plan.html">Open the Vaulty daily plan</a></p>
+<div class="hdr">
+  <div class="hdr-top">
+    <div class="hdr-title">⚡ Vaulty — 8-Week Build Plan</div>
+    <div class="hdr-pct" id="total-pct">0% done</div>
+  </div>
+  <div class="pbar"><div class="pbar-fill" id="total-bar" style="width:0%"></div></div>
+  <div class="wtabs" id="wtabs"></div>
+</div>
+
+<div class="legend">
+  <div class="leg"><div class="leg-dot" style="background:#DBEAFE;border:1px solid #93C5FD"></div>Development</div>
+  <div class="leg"><div class="leg-dot" style="background:#D1FAE5;border:1px solid #6EE7B7"></div>Learning</div>
+  <div class="leg"><div class="leg-dot" style="background:#FEF3C7;border:1px solid #FCD34D"></div>Marketing / Content</div>
+</div>
+
+<div class="main" id="main"></div>
+<button class="today-btn" onclick="goToday()">📍 Today</button>
+
+<script>
+const P=[
+{w:1,theme:"Setup + First Voice",goal:"All accounts ready. Database created. First LinkedIn post live.",days:[
+{d:1,name:"Monday",title:"Claim your tools",dev:[
+{t:"Go to education.github.com/pack → sign in with GitHub → verify student status → claim the pack. Unlocks free Copilot, Sentry, Datadog, free domain, and much more.",m:"45"},
+{t:"Go to supabase.com → Start your project → New project → Name: vaulty → Region: EU West → Create. Wait 2 min. In Project Settings → API: copy Project URL and anon key.",m:"20"},
+{t:"Go to console.anthropic.com → Sign up → API Keys → Create Key → Name: vaulty-dev → Copy immediately. It is shown ONCE only.",m:"15"},
+{t:"Go to sentry.io → claim GitHub Student Pack offer → Create project → Platform: React Native → Copy DSN string. Store in notes.",m:"15"}],
+learn:[{t:"YouTube: search 'React Native in 100 Seconds Fireship' → watch (2 min). Then 'Supabase in 100 Seconds Fireship' → watch (2 min). Just to know what you're building with.",m:"10"}],
+content:[{t:"Notes app: write the founding story. Two missed opportunities — which company, what happened, how it felt. Specific and honest. This becomes Post #1. Do not post yet.",m:"20"}]},
+
+{d:2,name:"Tuesday",title:"Set up your computer",dev:[
+{t:"Install VS Code from code.visualstudio.com. Inside VS Code → Extensions → search 'GitHub Copilot' → install → sign in with GitHub. Copilot is now your AI that writes code with you.",m:"25"},
+{t:"Install Node.js LTS from nodejs.org. After install, open terminal → run: node --version. You should see v20.x.x or higher.",m:"15"},
+{t:"Install Git from git-scm.com. Go to github.com → New repository → name: vaulty → Private → Create repository. Copy the clone URL.",m:"20"},
+{t:"Install Expo Go on your phone from App Store (iPhone) or Google Play (Android). This is how you test the app on your real phone without building a store version.",m:"5"}],
+learn:[{t:"YouTube: search 'Git and GitHub for beginners Fireship' → watch first 5 minutes. Git saves every version of your code — like a time machine for your project.",m:"8"}],
+content:[
+{t:"Update your LinkedIn bio today: 'Computer Engineering student | Building @vaulty — career intelligence for students | [University name]'.",m:"5"},
+{t:"Create Instagram account: @vaultyapp or @joinvaulty. Profile photo: Vaulty logo. Bio: 'Your career, always ready. Building in public.'",m:"10"}]},
+
+{d:3,name:"Wednesday",title:"Build the database",dev:[
+{t:"Open Supabase → your vaulty project → SQL Editor (left sidebar). Copy the complete schema SQL from the Vaulty Build Specification. Paste and click Run. Expect: 4 tables created.",m:"60"},
+{t:"Enable Row Level Security on all 4 tables. In SQL Editor run: ALTER TABLE public.profiles ENABLE ROW LEVEL SECURITY; — repeat this line for achievements, resume_requests, and linkedin_posts.",m:"20"},
+{t:"Run all RLS policy SQL from the build spec — the lines that create policies for SELECT, INSERT, UPDATE, DELETE. These ensure users only access their own data.",m:"30"},
+{t:"Run the auto-create profile trigger SQL. This inserts a profile row automatically when someone signs up. After running: check Table Editor → profiles table exists.",m:"15"}],
+learn:[{t:"Read: supabase.com/docs/guides/database/row-level-security — first two sections only. Understand WHY you need RLS before you move on.",m:"20"}],
+content:[{t:"Edit your founding story draft from Day 1. First sentence must be a hook that stops scrolling. Read it out loud — if it sounds formal, rewrite it simpler.",m:"20"}]},
+
+{d:4,name:"Thursday",title:"Test the database + edge function",dev:[
+{t:"Open Supabase → Table Editor. Confirm all 4 tables exist: profiles, achievements, resume_requests, linkedin_posts. They should be empty but visible.",m:"10"},
+{t:"Install Supabase CLI: run npm install -g supabase in your terminal. Then: supabase init in your project folder. Then: supabase functions new generate. This creates the edge function file.",m:"20"},
+{t:"Open the generated file at supabase/functions/generate/index.ts. Write the basic Deno function structure from the build spec — just the scaffold that handles 'resume' and 'linkedin' types. Do not deploy yet.",m:"45"},
+{t:"Add Anthropic API key to Supabase secrets: run supabase secrets set ANTHROPIC_API_KEY=sk-ant-your-key-here in terminal. Never put this key in code.",m:"10"}],
+learn:[{t:"YouTube: search 'Supabase Edge Functions explained' → watch any video under 8 minutes. These functions run on Supabase servers, not your laptop — that's why API keys stay safe.",m:"10"}],
+content:[{t:"Share your founding story draft with one trusted friend. Ask one question: 'Does this sound like me, or does it sound like a startup pitch?' Fix whatever they say.",m:"10"}]},
+
+{d:5,name:"Friday",title:"First post + domain",dev:[
+{t:"Add the full resume and linkedin generation logic to your edge function (from the build spec prompts section). Deploy: supabase functions deploy generate. Wait for 'Deployed' confirmation.",m:"45"},
+{t:"Test with Postman: POST to your edge function URL, body: {type:'resume', payload:{achievements:[...], jobDescription:'...', profile:{...}}}. You should get a JSON resume back.",m:"45"},
+{t:"Claim free domain: go to Namecheap (Student Pack benefit) and get vaulty.me free. Or go to Name.com (Student Pack) and get vaulty.app. You will connect it to your landing page later.",m:"20"}],
+learn:[{t:"Read Postman quickstart: postman.com/api-platform/api-testing. You will use Postman to test every backend call before connecting it to the app.",m:"15"}],
+content:[{t:"POST YOUR FOUNDING STORY ON LINKEDIN. Edit it once more, then post. Do not wait for it to be perfect. After posting, message 5 specific people from your interviews: 'I wrote something about why students miss opportunities — would love your reaction.'",m:"15"}]},
+
+{d:6,name:"Saturday",title:"Learn + respond to comments",dev:[
+{t:"Set up 1Password with GitHub Student Pack offer. Store: Supabase URL, Supabase anon key, Anthropic API key, Sentry DSN. Never put real keys in Notion, GitHub, or chat.",m:"25"}],
+learn:[{t:"FrontendMasters (GitHub Student Pack): go to frontendmasters.com → claim student access → find 'Complete Intro to React Native v3' → watch Chapters 1 and 2 today.",m:"90"}],
+content:[
+{t:"Reply to every comment on your LinkedIn post individually. Read what they wrote and respond specifically. This is where your first beta users come from.",m:"20"},
+{t:"Screenshot any comment where someone says 'this happened to me' or 'I needed this'. Save these in Notion → Feedback Inbox. They are your first testimonials.",m:"5"}]},
+
+{d:7,name:"Sunday",title:"Rest + plan Week 2",dev:[],
+learn:[{t:"FrontendMasters: watch Chapter 3 of the React Native course. Stop when you feel tired — 45 minutes max.",m:"45"}],
+content:[
+{t:"Post one Instagram story: a photo of your workspace with text overlay 'Week 1 of building Vaulty. Backend is live. App coming next week.'",m:"10"},
+{t:"Open Notion → Content Calendar → move 3 post ideas from Idea to Writing. Write the hooks so you are not staring at a blank screen during the week.",m:"15"}]}
+]},
+
+{w:2,theme:"Expo App + Auth Screens",goal:"App running on your phone. Signup works with real Supabase data. Landing page live.",days:[
+{d:8,name:"Monday",title:"Create the Expo app",dev:[
+{t:"Run in terminal: npx create-expo-app@latest vaulty --template blank-typescript. Then cd vaulty. Then npx expo start. Scan the QR code with Expo Go. You should see a white screen — that is success.",m:"20"},
+{t:"Install all dependencies in one command: npx expo install expo-router expo-constants expo-linking expo-status-bar react-native-safe-area-context react-native-screens @supabase/supabase-js @react-native-async-storage/async-storage expo-secure-store react-native-paper",m:"15"},
+{t:"Install more: npm install @hookform/resolvers react-hook-form zod react-native-reanimated date-fns && npx expo install expo-print expo-sharing expo-document-picker expo-file-system expo-font @expo-google-fonts/syne @expo-google-fonts/dm-sans",m:"15"},
+{t:"In package.json: change the 'main' field value to 'expo-router/entry'. Create the app/ folder at the project root. Create app/_layout.tsx with a basic Stack navigator from the build spec.",m:"30"}],
+learn:[{t:"Read: docs.expo.dev/router/introduction — first page only. Expo Router is like a file system for your screens. Each file inside app/ becomes a navigatable screen.",m:"15"}],
+content:[{t:"Design your survey results carousel in Canva: navy background, gold text, one stat per slide, 5 slides total. Use your actual survey percentages. Schedule to post Wednesday.",m:"45"}]},
+
+{d:9,name:"Tuesday",title:"Theme + Supabase client",dev:[
+{t:"Create the full folder structure: src/lib, src/types, src/hooks, src/services, src/prompts, src/components/ui, src/components/achievement, src/components/resume, src/theme, src/utils. Create empty index.ts in each.",m:"20"},
+{t:"Create src/theme/index.ts. Copy the complete Colors, Typography, Spacing, BorderRadius, and Shadows objects from the build spec. These are your design tokens — use them everywhere.",m:"25"},
+{t:"Create src/lib/supabase.ts. Copy the Supabase client setup from the build spec exactly. It uses SecureStore on the phone and localStorage on web for saving sessions.",m:"25"},
+{t:"Create src/lib/constants.ts. Add the ACHIEVEMENT_TYPES array (14 types with value/label/icon/emoji) and the CAREER_TAGS array (60 standardized tags). Copy from build spec.",m:"30"}],
+learn:[{t:"YouTube: search 'TypeScript interfaces explained simply' → watch under 8 minutes. You need interfaces because you will create all your data types in src/types/index.ts tomorrow.",m:"8"}],
+content:[{t:"Post your survey results carousel on Instagram. Caption: 'I asked 100+ students about their resume habits. These results are why I am building Vaulty.'",m:"10"}]},
+
+{d:10,name:"Wednesday",title:"Auth hook + welcome screen",dev:[
+{t:"Create src/types/index.ts. Copy the full Profile, Achievement, AchievementType, ResumeRequest, LinkedInPost, ResumeResult, and AuthState TypeScript interfaces from the build spec.",m:"25"},
+{t:"Create src/hooks/useAuth.ts. Build the React Context that provides: user, profile, session, loading, signIn, signUp, signOut. Use supabase.auth.onAuthStateChange to listen for login/logout events.",m:"60"},
+{t:"Create app/_layout.tsx wrapping Stack navigator with AuthProvider. Load Syne Bold and DM Sans fonts here using useFonts from @expo-google-fonts. Call SplashScreen.hideAsync() when fonts load.",m:"30"},
+{t:"Create app/(auth)/welcome.tsx — navy background, Vaulty V circle (gold on navy), 'Vaulty' in Syne ExtraBold white, tagline in gold, Get Started button and Sign In link.",m:"45"}],
+learn:[{t:"YouTube: search 'React Context useContext explained 10 minutes' → watch. This exact pattern is what you built in useAuth.ts.",m:"10"}],
+content:[{t:"Write your 'Interview Findings' LinkedIn post: 'I spent 3 weeks talking to 23 students about their career struggles. The same 3 problems came up every single time.' Share 3 themes anonymously.",m:"25"}]},
+
+{d:11,name:"Thursday",title:"Login + signup screen",dev:[
+{t:"Create app/(auth)/login.tsx. Build the form with React Hook Form + Zod validation: email (must be valid format), password (min 8 chars), confirm password for signup (must match). Show/hide toggle on password.",m:"60"},
+{t:"Connect form to Supabase: on submit call supabase.auth.signInWithPassword (login) or supabase.auth.signUp (signup). Show inline error below each field for wrong password, email taken, network error.",m:"45"},
+{t:"Add navigation logic: on successful signup → go to onboarding. On successful login → check profile.onboarding_completed → if true go to vault, if false go to onboarding.",m:"25"},
+{t:"Test: sign up with your email on your phone. Open Supabase → Authentication → Users. You should see yourself listed. Open Table Editor → profiles → you should see your row created automatically.",m:"20"}],
+learn:[{t:"YouTube: search 'React Hook Form tutorial 2024' → watch 15 minutes. Focus on: register, handleSubmit, formState.errors — these three are all you need for any form.",m:"15"}],
+content:[{t:"Post 'Interview Findings' on LinkedIn today. Record in Notion: impressions count after 24 hours, comments, DMs received.",m:"10"}]},
+
+{d:12,name:"Friday",title:"Onboarding + landing page",dev:[
+{t:"Create app/(auth)/onboarding.tsx — 3 steps with progress dots at top. Step 1: full name text input with autofocus. Step 2: university name + year picker (horizontal scrollable chips). Step 3: target field grid (2 columns, select one).",m:"90"},
+{t:"On Step 3 confirm: call supabase.from('profiles').update({ full_name, university, year_of_study, target_field, onboarding_completed: true }).eq('id', user.id). Then router.replace('/(app)/vault/').",m:"30"},
+{t:"Build landing page on Carrd.co (free account): hero headline, 3 feature bullets, Tally.so waitlist form embed. Publish it. Connect your free domain from the Student Pack to it.",m:"60"}],
+learn:[{t:"Read: docs.expo.dev/router/navigating-between-pages — understand push vs replace vs navigate. Use replace after login so users can not press back to the auth screen.",m:"10"}],
+content:[
+{t:"Share landing page in 3 WhatsApp groups: 'I'm building a career tool for students. Check this out and let me know what you think: [link]'.",m:"10"},
+{t:"Post 'Problem Explainer' on LinkedIn: 'Here is why students keep submitting weak resumes — it is not laziness. It is a system problem.'",m:"15"}]},
+
+{d:13,name:"Saturday",title:"LinkedIn Sign In auth",dev:[
+{t:"Go to developer.linkedin.com → Create app → App name: Vaulty → you need a LinkedIn Company Page (create one called Vaulty if you do not have one). Fill all required fields and submit.",m:"25"},
+{t:"In LinkedIn Developer app → Products tab → click Request access next to 'Sign In with LinkedIn using OpenID Connect'. This is approved instantly.",m:"10"},
+{t:"Go to Supabase Dashboard → Authentication → Providers → find LinkedIn (OIDC) → toggle enabled → paste your LinkedIn Client ID and Client Secret → Save.",m:"15"},
+{t:"In login.tsx: add a 'Continue with LinkedIn' button. Wire it to: supabase.auth.signInWithOAuth({ provider: 'linkedin_oidc', options: { redirectTo: 'vaulty://auth/callback', scopes: 'openid profile email' } })",m:"30"},
+{t:"In app.json confirm scheme: 'vaulty' exists under expo. Handle the redirect in app/_layout.tsx using expo-linking. Test on Android — tap LinkedIn button, browser opens, sign in, returns to app.",m:"45"}],
+learn:[{t:"YouTube: search 'OAuth 2.0 explained Fireship' → watch (7 min). Understanding why this flow exists matters more than memorizing the code.",m:"8"}],
+content:[{t:"Post Week 1 build update on LinkedIn: show a screenshot of the Supabase table editor (no real user data visible). Honest: 'Week 1. Database is live. Auth works. Here is what comes next.'",m:"15"}]},
+
+{d:14,name:"Sunday",title:"Test everything + plan",dev:[
+{t:"Test the full auth flow end-to-end on your phone: Welcome → Get Started → fill signup → onboarding 3 steps → arrive at vault. All 3 onboarding answers should appear in Supabase profiles table.",m:"45"},
+{t:"Fix any issues found. Common: navigation not clearing auth screens after login, keyboard blocking onboarding inputs, fonts not loading on first open. Fix before Week 3.",m:"45"}],
+learn:[{t:"FrontendMasters React Native course: watch Chapters 4 and 5. Focus on StyleSheet, flexbox, and the differences between React Native and web CSS.",m:"60"}],
+content:[{t:"Open Notion Content Calendar → plan Week 3 posts → move 3 ideas from Idea to Writing → write the hooks for each post now so you are not starting from zero.",m:"15"}]}
+]},
+
+{w:3,theme:"The Vault + PDF Import",goal:"Add an achievement on your phone. Import a real CV. Vault dashboard shows real data.",days:[
+{d:15,name:"Monday",title:"Achievement service + form start",dev:[
+{t:"Create src/services/achievements.service.ts. Implement 5 functions using supabase: getAchievements(userId), addAchievement(data), updateAchievement(id, updates), deleteAchievement(id), getAchievementById(id). Each returns data or throws an error.",m:"60"},
+{t:"Create src/hooks/useAchievements.ts. Wraps the service with React state: achievements array, loading boolean, error string. Functions for add/update/delete that update local state after each Supabase call — no refetch needed.",m:"40"},
+{t:"Start app/(app)/vault/add.tsx: Section 1 — title text input with autofocus and placeholder 'e.g. Led social media campaign for TEDx event'. Section 2 — type picker as 14 card grid (2 columns), each card shows emoji + label.",m:"60"}],
+learn:[{t:"Read: supabase.com/docs/reference/javascript/insert — understand the .from().insert() syntax and how to handle errors. This is your most-used database operation.",m:"10"}],
+content:[{t:"Post 'The Announcement' on LinkedIn: 'I am building something to fix this. It is called Vaulty.' Logo reveal. One sentence description. 'Looking for 30 students to try it first — comment below.'",m:"15"}]},
+
+{d:16,name:"Tuesday",title:"Complete the add form",dev:[
+{t:"Add to add.tsx: organization text input, start date picker (month + year only), end date picker, 'Currently doing this' toggle that sets is_current=true and hides end date.",m:"45"},
+{t:"Add description textarea (min 3 lines, 500 character limit with counter shown below). Add impact text input with helper: 'Quantify if possible — numbers make resumes stronger'.",m:"30"},
+{t:"Skills tag input: user types a skill → presses comma or Enter → it becomes a removable chip. Store as string array skills_used. Replicate for tools_used. Add career tags multi-select from CAREER_TAGS list.",m:"45"},
+{t:"Header Save button (disabled until title + type filled). On tap: call addAchievement(formData) → success toast 'Achievement added to your vault' → router.back(). Handle errors with an error toast.",m:"30"}],
+learn:[{t:"YouTube: search 'React Native FlatList tutorial beginner' → watch 15 minutes. Your career tags selector uses a FlatList inside a Modal.",m:"15"}],
+content:[{t:"Design the Vaulty logo reveal for Instagram: logo centered on navy background, tagline below in gold, 'Coming soon' badge. Post as a single image.",m:"25"}]},
+
+{d:17,name:"Wednesday",title:"Vault dashboard",dev:[
+{t:"Create app/(app)/vault/index.tsx. In a useEffect: call getAchievements(user.id). Show loading spinner while fetching. Show EmptyState component if array is empty. Show FlatList when data arrives.",m:"45"},
+{t:"Create src/components/achievement/AchievementCard.tsx: 3px colored left border (color = achievement type), title (2-line max), org + date range in gray, skill chips (max 3 visible + '+X more' chip).",m:"60"},
+{t:"Add type filter chips in a horizontal ScrollView at the top: 'All' + one chip per type the user has. Tap chip → filter the FlatList. Tapping 'All' shows everything.",m:"25"},
+{t:"Add 4 stat cards in a horizontal scroll at top: total achievements, unique skills count, resumes generated, LinkedIn posts. Fetch counts from Supabase with SELECT count().",m:"25"}],
+learn:[{t:"Read: reactnative.dev/docs/flatlist — focus on keyExtractor (must be unique per item), renderItem (the card component), ListEmptyComponent (the empty state). These 3 props are everything.",m:"15"}],
+content:[{t:"Post Week 2 build update on LinkedIn: show your vault dashboard screenshot even if empty. 'Week 2. The vault exists. Added the first real screen. Here is what it looks like.'",m:"15"}]},
+
+{d:18,name:"Thursday",title:"PDF extraction backend",dev:[
+{t:"In supabase/functions/generate/index.ts: add a new handler block for type === 'extract_pdf'. It receives payload.base64Pdf and payload.mimeType.",m:"25"},
+{t:"Write the Claude API call for PDF extraction: use messages array with content containing a document block (type:'document', source:{type:'base64', media_type:'application/pdf', data:base64Data}) plus the extraction prompt as a text block.",m:"45"},
+{t:"Add the extraction prompt from the build spec — the one that returns a JSON array of achievement objects. Last line must say: 'Respond ONLY with the JSON array. No other text.'",m:"20"},
+{t:"Redeploy: supabase functions deploy generate. Test with Postman: encode your own CV as base64 → POST to edge function with type:'extract_pdf' → verify you get a JSON array back.",m:"45"}],
+learn:[{t:"Read: docs.anthropic.com/en/docs/build-with-claude/files — the PDF section specifically. Claude can read PDFs natively — no PDF parsing library needed on your end.",m:"15"}],
+content:[{t:"Post 'Hard Product Decision' on LinkedIn: 'I had to choose between chat input and a form for adding achievements. Here is how I decided and what I learned from user interviews.'",m:"20"}]},
+
+{d:19,name:"Friday",title:"PDF import frontend",dev:[
+{t:"In add.tsx or a new import screen: add PDF upload button using expo-document-picker. Code: const result = await DocumentPicker.getDocumentAsync({ type: 'application/pdf', copyToCacheDirectory: true })",m:"30"},
+{t:"After user picks file: convert to base64 using expo-file-system. Code: const base64 = await FileSystem.readAsStringAsync(result.assets[0].uri, { encoding: FileSystem.EncodingType.Base64 })",m:"20"},
+{t:"Add 'Import Your CV' as a new onboarding option after Step 3. Show two buttons: [Upload PDF — fastest way to fill your vault] and [Add manually — I will do it later]. Upload button triggers the flow.",m:"30"},
+{t:"Call your edge function with the base64 PDF. Show the loading screen while waiting. Handle the response by navigating to the review screen with the extracted achievements array as route params.",m:"30"}],
+learn:[{t:"Read: docs.expo.dev/versions/latest/sdk/document-picker — specifically the getDocumentAsync options and the result object it returns (uri, mimeType, size).",m:"10"}],
+content:[{t:"Post an Instagram reel: screen record yourself adding an achievement to the vault form on your phone. No voiceover. Just the screen. Caption: 'This is how you build your vault. 60 seconds.'",m:"25"}]},
+
+{d:20,name:"Saturday",title:"Review screen + batch save",dev:[
+{t:"Create the 'Review Extracted Achievements' screen. Parse the JSON array from the edge function. Render each as a card showing: type emoji, title, organization, dates. Three action buttons: Edit / Remove / Keep.",m:"90"},
+{t:"Build the Edit modal for each card: pre-fill all fields with Claude's extraction. User can correct anything wrong (Claude sometimes gets dates or types wrong). Save edits to local state — not to DB yet.",m:"50"},
+{t:"Add 'Confirm All' button at the top. On tap: call supabase.from('achievements').insert(confirmedArray) as a single batch operation. On success: navigate to vault and show a success toast.",m:"25"},
+{t:"Add error fallback: if Claude returns empty JSON or JSON.parse fails → show: 'We could not read your PDF clearly. Try a text-based PDF or add manually.' + button to skip to manual entry.",m:"20"}],
+learn:[{t:"FrontendMasters React Native course: Chapters 6 and 7. Focus on controlled inputs and form state — you are building a lot of editing flows.",m:"60"}],
+content:[{t:"Collect all comments and DMs from your posts this week. Add interesting ones to Notion Feedback Inbox. Look for patterns: what do people say they want most?",m:"15"}]},
+
+{d:21,name:"Sunday",title:"Test PDF import end-to-end",dev:[
+{t:"Test the complete PDF import: onboarding → upload your own CV PDF → loading screen → review screen appears → edit one card → remove one card → confirm all → vault shows the achievements.",m:"60"},
+{t:"Test with 3 different CVs: your own, a friend's (ask permission), one in Arabic if possible. Document every issue in Notion Bug Tracker (title, severity, platform, steps to reproduce).",m:"60"}],
+learn:[{t:"Read one article today about something that confused you this week. No structured course — just fill in one gap.",m:"20"}],
+content:[{t:"Add all 30 target beta users to Notion Beta Users database. Source column should say where you found each person: interview participant, LinkedIn commenter, WhatsApp contact, etc.",m:"20"}]}
+]},
+
+{w:4,theme:"Resume Generator",goal:"Paste a job description. Get a real tailored resume built from your vault. Export as PDF.",days:[
+{d:22,name:"Monday",title:"Resume service + generate screen",dev:[
+{t:"Create src/services/resume.service.ts. Implement generateResume({ userId, jobDescription, jobTitle, companyName }): (1) fetch all user achievements, (2) fetch user profile, (3) call edge function, (4) parse JSON response, (5) save to resume_requests table, (6) return result.",m:"60"},
+{t:"Build app/(app)/generate/index.tsx top section: optional job title text input, optional company name text input. Below: large JD textarea (minHeight:180px, multiline:true) with character count shown.",m:"40"},
+{t:"Add vault summary widget: fetch achievement count from Supabase → show 'Your vault: 12 achievements ready' with achievement type badges in a horizontal scroll. Gives user confidence before generating.",m:"25"},
+{t:"Disable generate button if: fewer than 3 achievements OR job description under 100 characters. Show both conditions as helper text so user knows exactly what to fix.",m:"15"}],
+learn:[{t:"Read the resume generation prompt in your build spec carefully from top to bottom. Every rule matters. 'Only use data from the database, never invent' is your product's honesty promise.",m:"15"}],
+content:[{t:"Post 'Competitor Gap' on LinkedIn: 'I tested Zety, Novoresume, Kickresume, Teal HQ, and ChatGPT this week. Here is exactly where every single one fails students.'",m:"25"}]},
+
+{d:23,name:"Tuesday",title:"AI wiring + loading animation",dev:[
+{t:"Wire the generate button to your resume.service.ts. On tap: set loading state → call generateResume → navigate to result screen on success → show error toast on failure.",m:"30"},
+{t:"Build the 3-step loading animation. Use useState for step (0,1,2) and useEffect with setInterval(1500ms) to advance steps. Messages: 'Analyzing your vault...' → 'Matching to role requirements...' → 'Building your resume...'",m:"40"},
+{t:"Handle success: save result to resume_requests table → navigate to generate/result screen passing the resume request ID as a route param (router.push with params).",m:"25"},
+{t:"Handle failure: clear loading state → show error toast with the error message → user stays on generate screen and can try again without losing their JD input.",m:"20"}],
+learn:[{t:"YouTube: search 'useEffect setInterval React Native' → watch any short video under 8 minutes. You need this for the loading message animation.",m:"8"}],
+content:[{t:"Design 'Before vs After Resume' graphic in Canva: two columns, generic resume on left, Vaulty tailored resume on right (use your own real resume, blur name). Schedule for Thursday Instagram.",m:"30"}]},
+
+{d:24,name:"Wednesday",title:"Resume result screen",dev:[
+{t:"Create app/(app)/generate/result.tsx. Fetch resume_request by id from Supabase. Display: circular match score indicator (green 8-10, gold 5-7, red 0-4) with the score number centered inside.",m:"45"},
+{t:"Create src/components/resume/KeywordMatch.tsx: two labeled rows. 'Covered' row: horizontal scroll of small green chips. 'Missing' row: horizontal scroll of small red chips. Show counts next to each label.",m:"25"},
+{t:"Render the full resume text in a white card. Apply minimal formatting: lines in ALL CAPS become bold headers, bullet symbols (•) get left padding. Use a slightly smaller font (11-12px) for density.",m:"35"},
+{t:"Show improvement suggestion in an amber-background callout card. Add 'Copy Resume' button (full width, outlined) that copies all text to clipboard and shows 'Copied!' toast.",m:"20"}],
+learn:[{t:"YouTube: search 'Clipboard copy text Expo React Native' → watch 5 minutes. You need expo-clipboard or @react-native-clipboard/clipboard.",m:"5"}],
+content:[{t:"Post 'Before vs After Resume' reel on Instagram. Caption: 'Left: generic. Right: Vaulty. Same student. Same experience. Different presentation. Which one gets called back?'",m:"10"}]},
+
+{d:25,name:"Thursday",title:"PDF export",dev:[
+{t:"Create src/services/pdf.service.ts. Function: exportResumeToPDF(resumeText, candidateName). Step 1: convert resume text to an HTML string with professional CSS — A4 page, 18mm margins, navy section headers, 10pt body.",m:"45"},
+{t:"Step 2: call Print.printToFileAsync({ html: htmlString }). This generates a PDF file in the app's temp directory and returns the URI.",m:"20"},
+{t:"Step 3: call Sharing.shareAsync(fileUri). This opens the native share sheet — user can save to Files, share to WhatsApp, email it, etc.",m:"15"},
+{t:"Add 'Export as PDF' button (full width, navy background, white text) to the result screen. Test on your own phone: generate → export → open the PDF. Fix formatting until it looks like a real resume.",m:"45"}],
+learn:[{t:"Read: docs.expo.dev/versions/latest/sdk/print — specifically the printToFileAsync options (html, width, height, margins). Understanding the CSS that prints well is the main skill.",m:"10"}],
+content:[
+{t:"Create your Tally.so beta waitlist form: name, email, university, year, phone (optional), platform (Android / iPhone). Copy the embed link.",m:"15"},
+{t:"Add waitlist link to your landing page footer and to your LinkedIn bio ('Join beta: [link]'). Share in your 5 most active WhatsApp groups today.",m:"10"}]},
+
+{d:26,name:"Friday",title:"Upgrade prompt + resume history",dev:[
+{t:"Add resume_count integer column to profiles table in Supabase (ALTER TABLE public.profiles ADD COLUMN resume_count integer DEFAULT 0). In resume.service.ts: after saving to resume_requests, increment this counter.",m:"20"},
+{t:"After the user generates their 2nd resume, show a Modal with: 'You have used 2 of your 3 free generations. Upgrade to unlimited for 80 EGP/month.' Two buttons: Upgrade and Maybe Later.",m:"40"},
+{t:"Wire Upgrade button: call posthog.capture('upgrade_clicked') → show toast: 'Premium is coming soon — we will notify you!' No payment flow yet. This just measures interest.",m:"15"},
+{t:"Add 'Recent Resumes' section at the bottom of generate/index.tsx: show last 3 resume_requests as cards (job title, match score badge, date). Tap → navigate to that result screen.",m:"25"}],
+learn:[{t:"Read Posthog docs → 'Capturing events in React Native'. Install posthog-react-native and add PostHogProvider to your app/_layout.tsx. You will track all events next week.",m:"20"}],
+content:[
+{t:"Post 'Beta Waitlist' on LinkedIn: 'Vaulty opens for 30 beta users next week. Here is what you get access to: [3 bullet features]. Join the waitlist: [link].'",m:"15"},
+{t:"Share waitlist form in 5 WhatsApp groups with a personal message — not a broadcast. Explain what you are building in 2 sentences.",m:"15"}]},
+
+{d:27,name:"Saturday",title:"Testing + iteration",dev:[
+{t:"Test the full generation flow 5 times with 5 different real job descriptions. Each time: does the output change meaningfully? Does it use your actual vault data? If it feels generic, refine the resume prompt.",m:"90"},
+{t:"Add: pull-to-refresh on vault screen, empty state on generate screen (if no achievements), loading skeleton on result screen while fetching from Supabase. Never show a blank white screen.",m:"40"}],
+learn:[{t:"FrontendMasters React Native course: Chapters 8 and 9.",m:"60"}],
+content:[{t:"Post Week 3 build update on LinkedIn: show the resume result screen (your own real resume, name blurred). 'Week 3. First real resume generated from vault data. Match score: 8/10.'",m:"20"}]},
+
+{d:28,name:"Sunday",title:"Message your interview list",dev:[
+{t:"Fix the top 3 bugs you found this week. Prioritize anything that produces wrong data or crashes the app. Skip cosmetic bugs for now.",m:"60"}],
+learn:[],
+content:[
+{t:"Message 5 people from your 23 interviews: 'Hey [name] — you know the resume problem we talked about? I built it. Can I show you the app this week? Takes 20 minutes, completely free.' Each message personalized.",m:"25"},
+{t:"Open Notion Beta Users database — fill in the Achievements Added, Resumes Generated fields for any users who have already signed up and used the app.",m:"10"}]}
+]},
+
+{w:5,theme:"LinkedIn Generator + Polish",goal:"All 3 MVP features working. Posthog tracking 6 events. App feels complete.",days:[
+{d:29,name:"Monday",title:"LinkedIn generator backend + screen",dev:[
+{t:"Create src/services/linkedin.service.ts. Implement generateLinkedInPost({ userId, achievementId }): fetch the specific achievement + user profile → call edge function with type:'linkedin' → parse JSON → save to linkedin_posts table.",m:"40"},
+{t:"Add 'linkedin' handler to your edge function: receives achievement data and user profile → calls Claude with the LinkedIn post prompt → returns { post: string, hashtags: string[] } JSON.",m:"40"},
+{t:"Build app/(app)/linkedin/index.tsx top section: 'Select an achievement' label. Below: horizontal scroll of compact achievement cards (emoji, title, org only). Selected card gets gold border.",m:"40"},
+{t:"Generate Post button (disabled until one achievement is selected). Wire to service. Show loading. On success: render post in a LinkedIn-preview-style card with character count shown.",m:"25"}],
+learn:[{t:"Read the LinkedIn post prompt in the build spec. Every rule matters — especially: no 'excited to share', hook must be first, authentic student voice. Understand the why behind each rule.",m:"10"}],
+content:[{t:"Post 'Beta Opening' on LinkedIn: '30 spots. Vaulty beta opens this week. I am looking for students who have an upcoming application or employment fair. Comment VAULT below.'",m:"15"}]},
+
+{d:30,name:"Tuesday",title:"LinkedIn screen complete",dev:[
+{t:"Add Regenerate button (outlined style, below the post card). On tap: call the service again with the same achievement → replace the displayed post with the new one → toast 'New post generated'.",m:"20"},
+{t:"Add Copy Post button (full width, navy). On tap: copy full post text including hashtags to clipboard → toast 'Copied! Paste directly into LinkedIn'.",m:"15"},
+{t:"Save each generated post to linkedin_posts table. Add 'Recent Posts' section below showing the last 5 as compact cards. Tap any → show a modal with the full post + Copy button.",m:"25"},
+{t:"Create the beta WhatsApp group. Set name, icon (Vaulty logo), description: 'Vaulty Beta — 30 early users. Be honest. Break things. Tell us everything.' Add yourself as admin.",m:"10"}],
+learn:[{t:"Read: reactnative.dev/docs/modal — the Modal component. You use this for the recent post viewer and the upgrade prompt. Simple but important.",m:"10"}],
+content:[{t:"Personally message the first 10 people on your 30-person beta list: 'Hey [name] — Vaulty beta opens today. You are one of 30. Here is how to install it on [Android/iPhone]: [instructions].'",m:"30"}]},
+
+{d:31,name:"Wednesday",title:"Profile screen + Posthog",dev:[
+{t:"Build app/(app)/profile/index.tsx. Top: avatar circle (first letter of name, 60px, navy bg, gold text). Below: name in Syne Bold, university + year in gray500, target field badge.",m:"40"},
+{t:"Stats grid (2 rows x 2 cols): achievements count, resumes generated, LinkedIn posts, unique skills. Use Supabase SELECT count() queries for each. Show loading skeletons while fetching.",m:"30"},
+{t:"Add Sign Out button at the bottom. Confirmation dialog before signing out. On confirm: supabase.auth.signOut() → router.replace('/(auth)/welcome') → clear all local state.",m:"20"},
+{t:"Install posthog-react-native. Wrap your app in PostHogProvider in app/_layout.tsx alongside AuthProvider. Use your Posthog project API key from the dashboard.",m:"25"}],
+learn:[{t:"Read: posthog.com/docs/libraries/react-native — just the installation and capture sections. Tomorrow you will add all 6 tracked events.",m:"15"}],
+content:[{t:"Post 'First Beta User Reaction' on LinkedIn: ask permission from a beta user → quote their reaction (anonymized). 'Beta user reacted to their first Vaulty resume. Here is what they said.'",m:"15"}]},
+
+{d:32,name:"Thursday",title:"Track all 6 events",dev:[
+{t:"In vault/add.tsx after successful save: posthog.capture('achievement_added', { type: achievement.type, source: 'manual' })",m:"10"},
+{t:"In PDF review screen after confirm all: posthog.capture('achievement_added', { type: 'pdf_import', count: achievements.length, source: 'pdf' })",m:"10"},
+{t:"In resume.service.ts after saving to DB: posthog.capture('resume_generated', { match_score: result.match_score, achievement_count: achievements.length })",m:"10"},
+{t:"In linkedin.service.ts after saving: posthog.capture('linkedin_post_generated', { achievement_type: achievement.type }). In upgrade modal: posthog.capture('upgrade_prompt_shown') on show, posthog.capture('upgrade_clicked') on button press. In pdf.service.ts after shareAsync: posthog.capture('pdf_exported').",m:"20"},
+{t:"Open Posthog → Live Events → do each action on your phone → confirm all 6 events appear in real time. Go to Insights → create a Funnel: achievement_added → resume_generated → pdf_exported → save it.",m:"25"}],
+learn:[{t:"In Posthog: go to People tab → find your own user → look at the full event timeline. This is what you will see for every user. Understanding this view helps you understand user behavior.",m:"10"}],
+content:[{t:"Post Instagram reel: real-time screen recording of Vaulty generating a LinkedIn post. No editing, no voiceover. Just raw product in action. Caption: 'Achievement in → LinkedIn post out. Meet Vaulty.'",m:"20"}]},
+
+{d:33,name:"Friday",title:"Full polish pass",dev:[
+{t:"Go through every screen. Every async operation must show a loading state. This means: buttons disable and show ActivityIndicator on press, lists show skeleton cards while fetching. No waiting with a blank screen.",m:"60"},
+{t:"Add EmptyState component to: vault (no achievements yet), generate (not enough achievements), linkedin (no achievements), recent resumes. Each has an icon, title, subtitle, and optional action button.",m:"40"},
+{t:"Add KeyboardAvoidingView to every form screen (add achievement, login, onboarding). Test on your phone: open the keyboard on each form — no input should be hidden behind it.",m:"25"},
+{t:"Add expo-haptics to 3 moments: Haptics.impactAsync(Heavy) when achievement saved, Haptics.notificationAsync(Success) when resume generated, Haptics.impactAsync(Light) on generate button press.",m:"15"}],
+learn:[{t:"Read: reactnative.dev/docs/keyboardavoidingview — the difference between padding, height, and position behavior. Use padding for iOS and height for Android.",m:"10"}],
+content:[{t:"Post 'What Beta Users Are Teaching Me' on LinkedIn: 3 real pieces of feedback from your WhatsApp group. What they said and what you are changing because of it.",m:"20"}]},
+
+{d:34,name:"Saturday",title:"Cross-device testing",dev:[
+{t:"Login to BrowserStack (GitHub Student Pack). Upload your preview APK. Test on: Samsung Galaxy S23 (Android 13), Samsung Galaxy A series (Android 11), iPhone 14 Pro via App Live browser.",m:"60"},
+{t:"Document every visual issue found. Add each to Notion Bug Tracker with severity. Fix all Critical and High severity issues today. Leave Low and Medium for after the store submission.",m:"60"}],
+learn:[{t:"FrontendMasters React Native course: final chapters. Aim to complete the course by end of this week.",m:"60"}],
+content:[{t:"Post Week 4 build update: 'All 3 Vaulty features now work. Here is a screen recording of the complete flow: add achievement → generate resume → create LinkedIn post → export PDF.'",m:"20"}]},
+
+{d:35,name:"Sunday",title:"LinkedIn CSV import",dev:[
+{t:"Add 'Import from LinkedIn' as a secondary option in Profile screen under a new 'Add More Data' section. Label it clearly as optional — PDF import is the primary path.",m:"20"},
+{t:"Build instructions screen: numbered steps with clear language showing how to export from LinkedIn (Settings → Data Privacy → Get a copy of your data → select Positions, Education, Certifications, Skills → Request archive → wait for email → upload ZIP here).",m:"40"},
+{t:"Build CSV parser: use DocumentPicker for ZIP → parse Positions.csv, Education.csv, Certifications.csv with a simple line splitter → map each row to the achievement schema → show the same review screen you already built.",m:"60"}],
+learn:[],
+content:[{t:"Write a personalized message for each of your 30 beta candidates if you have not already. Store each message draft in Notion so sending is fast when the APK is ready next week.",m:"30"}]}
+]},
+
+{w:6,theme:"Beta Testing — 30 Real Users",goal:"APK in users' hands. Feedback collected. 3 validation questions answered with real data.",days:[
+{d:36,name:"Monday",title:"Build and distribute the APK",dev:[
+{t:"Install EAS CLI: npm install -g eas-cli. Login: eas login. Configure: eas build:configure → select Android → choose preview profile. This sets up the build pipeline.",m:"20"},
+{t:"Build the APK: eas build --platform android --profile preview. This uploads your code to Expo servers and builds in the cloud. Check progress at expo.dev/accounts/[you]/builds. Takes ~15-20 minutes.",m:"25"},
+{t:"Download the APK from EAS dashboard. Upload to Google Drive. Create a public share link. Test the install on 3 different Android phones before sharing widely. Fix any install-time errors.",m:"20"},
+{t:"For iOS beta users: run npx expo start --tunnel. The QR code in the terminal works with Expo Go over the internet, not just local WiFi. Share this QR as a screenshot.",m:"15"}],
+learn:[{t:"Read: docs.expo.dev/build/introduction — specifically the difference between development (for you), preview (for beta testers), and production (for stores). You are in preview stage now.",m:"10"}],
+content:[{t:"Send the APK to all 30 beta users today. Each message must be individual and personal. Include: install link, specific task ('add 10 real achievements, generate 2 resumes, send me your honest reaction'), your WhatsApp number.",m:"45"}]},
+
+{d:37,name:"Tuesday",title:"Watch Sentry + first reactions",dev:[
+{t:"Open Sentry dashboard. Check 'Issues' tab every 2 hours today. Any Unhandled crash → investigate the stack trace → fix the root cause → rebuild APK → share updated link in beta group with change note.",m:"30"},
+{t:"Open Posthog → Live Events. Do you see events from users who are not you? That means real people are using it. Note which events fire most and which are missing.",m:"20"},
+{t:"Common crashes to fix immediately: users uploading image-only PDFs (add better error message), users on Android 10 (test Supabase client compatibility), large resume text overflowing layout.",m:"45"}],
+learn:[{t:"Read: docs.sentry.io/platforms/react-native/usage — how to read a stack trace. The stack trace tells you the exact file and line number of every crash.",m:"20"}],
+content:[{t:"Post once in beta WhatsApp group: 'If anything looks wrong or feels confusing — screenshot it and send it here. There is no bug too small. You are helping build this.' Then observe quietly.",m:"5"}]},
+
+{d:38,name:"Wednesday",title:"Fix + authentic content",dev:[
+{t:"Fix every Critical bug from Sentry today. Fix High severity bugs that more than one user hit. Skip Medium and Low — you will batch those in Week 7.",m:"90"},
+{t:"Rebuild if you fixed anything: eas build --platform android --profile preview. Share updated APK in WhatsApp group: 'Updated version — fixed [what you fixed]. Please update and continue testing.'",m:"25"}],
+learn:[{t:"In Posthog: set up a retention chart → go to Insights → Retention → start event: achievement_added or any event → check the Day 2 and Day 3 columns. These are your earliest retention signals.",m:"15"}],
+content:[{t:"Post 'Behind the Scenes — Bug Day' on Instagram: photo of your screen showing Sentry errors or a code editor at 11pm. Caption: 'Today I spent 4 hours fixing one crash. This is what building looks like. No aesthetics. Just work.'",m:"15"}]},
+
+{d:39,name:"Thursday",title:"Day 3 retention check",dev:[
+{t:"Open Posthog → Retention. Look at the cohort from Day 1 of beta. How many returned on Day 3? Record this number in Notion Weekly Metrics. This is your most important number right now.",m:"20"},
+{t:"Open Notion Beta Users database. For each person: check if Day 3 Return is true (Posthog shows them active). Also check: did they add achievements after the first session without you prompting?",m:"25"},
+{t:"Message every user who has NOT returned since signup: 'Hey [name] — hope the install went smoothly. Did anything feel confusing or broken? I want to fix it before we go wider.'",m:"25"}],
+learn:[],
+content:[{t:"Post on LinkedIn: 'I checked user retention data for the first time today. Here is what the numbers are telling me.' Share the actual Day 3 % — even if it is low. Honesty builds credibility.",m:"15"}]},
+
+{d:40,name:"Friday",title:"Datadog setup",dev:[
+{t:"Claim Datadog Student Pack: go to datadoghq.com → Student Pack offer → create account. This gives you Pro plan free for 2 years. Do not skip this — it is worth thousands of dollars.",m:"20"},
+{t:"In Datadog → Synthetic Monitoring → New Test → API Test → enter your Supabase edge function URL → run test → confirm it responds under 2 seconds. Set up an alert if it goes down.",m:"25"},
+{t:"In Datadog → Infrastructure → optionally connect your Supabase project for database monitoring. You will not need most of these metrics now but the uptime monitoring is immediately useful.",m:"20"}],
+learn:[{t:"Watch the 'Getting Started with Datadog' intro video on their website (10 min). You will not use 90% of Datadog yet, but understanding the dashboard prevents confusion when alerts fire.",m:"10"}],
+content:[{t:"Post Week 5 update on LinkedIn: Posthog dashboard screenshot (blur user emails/names). Share: X users, X achievements, X resumes generated, Day 3 retention %. Real numbers only.",m:"20"}]},
+
+{d:41,name:"Saturday",title:"BrowserStack real devices",dev:[
+{t:"Login to BrowserStack → Real Devices → App Testing → upload your APK. Test on: Samsung Galaxy S23 (latest Android), Samsung A54 (mid-range, common in Egypt), older device with Android 10.",m:"60"},
+{t:"Document all visual issues as screenshots. Add each to Notion Bug Tracker. Fix the top 3 most visible layout problems. Typical fixes: text overflow on small screens, button padding, tab bar height.",m:"60"}],
+learn:[{t:"YouTube: search 'React Native Dimensions API responsive design' → watch 10 minutes. Using Dimensions.get('window') lets you size elements relative to screen width.",m:"10"}],
+content:[{t:"Email university career center today. Subject: 'Student-built career readiness tool — partnership inquiry'. Body: who you are, what Vaulty does, 30 students already testing it, 20-minute meeting request.",m:"20"}]},
+
+{d:42,name:"Sunday",title:"Collect + synthesize feedback",dev:[],
+learn:[],
+content:[
+{t:"Message every beta user: '3 quick questions: 1) Does the resume feel like it was written about you? Rate 1-5. 2) Would you submit it to a real company? 3) What was the most confusing part of the app?'",m:"25"},
+{t:"As replies come in: add each to Notion Feedback Inbox. Fill in Rating, Key Quote, Feedback Given checkbox for each person in Beta Users database.",m:"25"},
+{t:"Update the 3 Validation Scorecard questions in Notion: Day 7 retention %, average resume rating, upgrade click rate. Change status from 'Not yet measured' to the actual numbers.",m:"15"}]}
+]},
+
+{w:7,theme:"App Store Preparation",goal:"Privacy policy live. Delete account built. App submitted to Google Play Production.",days:[
+{d:43,name:"Monday",title:"Privacy policy + delete account",dev:[
+{t:"Go to termly.io → free plan → create Privacy Policy → fill in: app name Vaulty, your name as company, country Egypt, data you collect (email, name, career achievements) → download as text.",m:"25"},
+{t:"Add the privacy policy to your Carrd landing page. Create a /privacy page or section. The URL (vaulty.me/privacy) is required when submitting to Google Play and Apple.",m:"20"},
+{t:"Build 'Delete Account' in the app. Profile screen → add Settings section → 'Delete my account and all data' button with a destructive red style and confirmation dialog before doing anything.",m:"30"},
+{t:"Delete account function: (1) delete from achievements WHERE user_id = uid, (2) delete from resume_requests WHERE user_id = uid, (3) delete from linkedin_posts WHERE user_id = uid, (4) delete from profiles WHERE id = uid, (5) supabase.auth.signOut(). Navigate to welcome screen.",m:"45"}],
+learn:[{t:"Read: developer.apple.com/app-store/review/guidelines/ → Section 5.1 Privacy. Skim 15 minutes. Know what Apple requires before you submit — especially the data deletion requirement.",m:"15"}],
+content:[{t:"Post 'Preparing to launch' on LinkedIn: 'Privacy policy written. Delete account feature built. Google Play submission this week. Things are getting real.'",m:"10"}]},
+
+{d:44,name:"Tuesday",title:"App icon + splash screen",dev:[
+{t:"Open Canva → create a 1024x1024 PNG of the Vaulty app icon. The V+arrow mark on navy background. Export as PNG. Place it at assets/icon.png in your project.",m:"25"},
+{t:"Create splash screen: 2048x2732 PNG, navy background, centered Vaulty logo (white or gold V mark). Place at assets/splash.png. Expo auto-generates all other sizes from this one file.",m:"20"},
+{t:"Create Android adaptive icon: transparent background, just the V mark, 1024x1024. Place at assets/adaptive-icon.png. In app.json set backgroundColor to '#0D1F4E' for the adaptive icon.",m:"20"},
+{t:"Run npx expo start and check on your phone. The app icon in Expo Go should show your Vaulty logo. The splash screen should appear briefly when the app opens. Fix until both look correct.",m:"20"}],
+learn:[{t:"YouTube: search 'app store screenshots that convert downloads' → watch 10 minutes. Screenshots are often the main reason users download or skip. Treat them like a 5-second pitch.",m:"10"}],
+content:[{t:"Design 5 app screenshots in Canva: use a phone frame template, place 5 different screens inside it (vault, add achievement, generate resume, result with match score, LinkedIn post). Add a benefit caption at the top of each.",m:"60"}]},
+
+{d:45,name:"Wednesday",title:"Store listing copy",dev:[
+{t:"Write Google Play short description (80 characters maximum): 'Build your career vault. Generate tailored resumes instantly.' Count characters carefully.",m:"10"},
+{t:"Write Google Play full description (4000 chars max). Structure: 1 hook paragraph → 3 feature sections with bullets → 'Who is Vaulty for?' paragraph → CTA. Include keywords: resume builder, career tool for students, tailored resume, ATS.",m:"60"},
+{t:"Take real screenshots on your phone using Expo Go on the 5 key screens. Transfer photos to your laptop. In Canva: add phone frames and caption overlays. Export at minimum 1080px wide.",m:"45"}],
+learn:[{t:"Read: support.google.com/googleplay/android-developer/answer/9898842 — the official Play Store listing requirements. Know what is required vs optional before you start filling in fields.",m:"10"}],
+content:[{t:"Post 'App Screenshots Reveal' on Instagram: carousel of your 5 app screenshots. Caption: 'Here is what Vaulty looks like. Launching on Google Play this week.'",m:"10"}]},
+
+{d:46,name:"Thursday",title:"Google Play setup",dev:[
+{t:"Go to play.google.com/console → pay $25 one-time registration → create developer account → verify identity (can take a few hours — start early).",m:"30"},
+{t:"Create app: Play Console → All apps → Create app → Name: Vaulty → Default language: English → App or Game: App → Free → Create.",m:"15"},
+{t:"Fill the required Dashboard checklist: App access (all features accessible, no login required for review), Ads (no ads), Content rating questionnaire (fills automatically mostly), Target audience (13+, Education category).",m:"45"},
+{t:"Upload all store assets: app icon (512x512 PNG), feature graphic (1024x500 — create a navy banner with logo + tagline in Canva), all 5 screenshots. Add short and full descriptions.",m:"30"}],
+learn:[],
+content:[{t:"Post 'Google Play countdown' on LinkedIn: 'We are submitting Vaulty to Google Play tomorrow. First career intelligence app built by a student, for students. Download link coming soon.'",m:"10"}]},
+
+{d:47,name:"Friday",title:"Production build + internal testing",dev:[
+{t:"Build the production AAB (Android App Bundle — different from APK, required by Play Store): eas build --platform android --profile production. Takes 15-20 minutes on Expo servers.",m:"25"},
+{t:"Download the AAB from EAS dashboard. In Play Console → Release → Internal Testing → Create new release → Upload AAB file → Release name: Vaulty 1.0 → What's new: Initial release → Save and publish.",m:"25"},
+{t:"Add 5 internal testers (yourself + 4 trusted people): Internal Testing → Testers tab → Manage testers → add Gmail addresses. They receive an email with a Play Store install link.",m:"15"},
+{t:"Let internal testers use it for 48 hours minimum before submitting to Production. Watch Sentry for any new crash types that only appear in the production build.",m:"0"}],
+learn:[{t:"Read: docs.expo.dev/submit/android — understand the full submission flow. EAS Submit can automate uploading to Play Console if you configure credentials.",m:"10"}],
+content:[{t:"Ask your 5 internal testers to respond with any issues by Sunday morning. Give them specific questions: did it install cleanly, what was your first impression, one confusing thing.",m:"10"}]},
+
+{d:48,name:"Saturday",title:"Fix + submit to production",dev:[
+{t:"Fix any issues found by internal testers in the last 48 hours. If you need to rebuild: eas build --platform android --profile production → repeat the upload step.",m:"60"},
+{t:"Play Console → Production → Create new release → upload the final AAB → write release notes → Review release → Start rollout to Production. Google will review within 3 to 7 days.",m:"25"},
+{t:"Note: you cannot control how fast Google reviews. Prepare your launch announcement post while waiting. The approval notification goes to your registered Google account email.",m:"0"}],
+learn:[{t:"FrontendMasters: revisit whichever chapter from the React Native course still feels unclear. Fill the gap before moving to Month 2 learning.",m:"45"}],
+content:[{t:"Post 'Submitted to Google Play' on LinkedIn: 'Vaulty is in review. Waiting 3-7 days for Google approval. To the 30 students who beta tested: you helped build this. Thank you.'",m:"15"}]},
+
+{d:49,name:"Sunday",title:"Apple + rest",dev:[
+{t:"Check if your university has an Apple Developer Program membership. If yes: request student access. If no: continue iOS distribution via Expo Go QR code until you have revenue for the $99 fee.",m:"20"},
+{t:"If Apple Developer access available: eas build --platform ios --profile production. When build completes: eas submit --platform ios. Apple review takes 24-48 hours.",m:"0"}],
+learn:[],
+content:[
+{t:"Write your launch announcement post draft while you wait for Google's approval. Draft it now so you can post the moment the app goes live. Include: Play Store link, your founding story in 3 sentences, 'This took 8 weeks to build from zero'.",m:"30"},
+{t:"Take the afternoon off. You have built something real. Rest.",m:"0"}]}
+]},
+
+{w:8,theme:"Launch + Monitor + What's Next",goal:"Live on Google Play. 100 downloads target. Phase 2 planned based on real data.",days:[
+{d:50,name:"Monday",title:"Launch day",dev:[
+{t:"When Google's approval email arrives: open Google Play on your phone → search Vaulty → download it → test the production version is identical to your beta. Check every screen works.",m:"20"},
+{t:"Open Sentry and Posthog from the moment the app goes live. Production users behave differently from beta users. Watch for new error patterns in the first 4 hours specifically.",m:"25"}],
+learn:[],
+content:[
+{t:"POST THE LAUNCH ANNOUNCEMENT simultaneously on LinkedIn, Instagram, and all WhatsApp groups. LinkedIn: founding story (2 sentences) → 3 features → Play Store link → 'Download now and tell me what you think.' Tag your university in the post.",m:"25"},
+{t:"Send the app link personally to your 23 interview participants. They were part of building this — they deserve to hear from you first before the public post.",m:"15"}]},
+
+{d:51,name:"Tuesday",title:"Drive first downloads",dev:[
+{t:"Fix any Critical Sentry errors that appeared in the first 24 hours. Build a patch update: eas build → upload to Play Console → submit update release. Google updates are approved faster than initial submissions.",m:"60"},
+{t:"Check Posthog: DAU, feature usage breakdown, where users drop off in the funnel. Record everything in Notion Weekly Metrics.",m:"20"}],
+learn:[],
+content:[
+{t:"Message every beta user: 'Vaulty is officially live on Google Play. If you have 30 seconds — a review would mean everything right now. Here is the direct link: [link]'",m:"15"},
+{t:"Post 'How Vaulty works' reel on Instagram: real-time screen recording of the complete flow in 60 seconds (vault → add → generate → PDF). No voiceover. Captions only. This is your best acquisition content.",m:"40"}]},
+
+{d:52,name:"Wednesday",title:"Career center + partnerships",dev:[
+{t:"Check Day 2 retention in Posthog. Of launch day users, how many opened the app on Day 2? Record. Target: 25%+. If below 15%, investigate what the most common drop-off event is.",m:"20"},
+{t:"Monitor Datadog: are edge function response times normal (under 8 seconds for generation)? If you see spikes, check if it correlates with specific user actions in Posthog.",m:"15"}],
+learn:[],
+content:[
+{t:"Follow up your career center email from Week 6 with a new email: 'Vaulty launched on Google Play this week. Link: [link]. 30+ students have already generated tailored resumes. I would love 20 minutes of your time to show you what we built.'",m:"15"},
+{t:"Post 'Day 2 of being live' on LinkedIn: honest download count, active user count, what you are monitoring. Founders who share real numbers in real time build the most trust.",m:"15"}]},
+
+{d:53,name:"Thursday",title:"Student club outreach",dev:[
+{t:"Ship one small improvement based on the most common feedback from the first 48 hours of production users. Build, upload, release. Getting into the habit of shipping updates is as important as the feature itself.",m:"60"}],
+learn:[{t:"Start reading about React Query: tanstack.com/query/latest/docs/framework/react/overview. This is your first Month 2 technical upgrade — better data fetching, caching, and background refresh.",m:"30"}],
+content:[
+{t:"Reach out to 3 student clubs at your university (tech club, business club, entrepreneurship society). Message the president: 'I am a student who just launched an app on Google Play. I would love to run a free 30-minute CV workshop for your members. Vaulty is the tool I built. Can we schedule something?'",m:"25"},
+{t:"Post on LinkedIn about the student club outreach plan: 'The next step for Vaulty is campus workshops. Here is why I think that is the right growth channel for a student product.'",m:"15"}]},
+
+{d:54,name:"Friday",title:"Month 1 data post",dev:[
+{t:"Run SQL in Supabase to get final counts: total users (SELECT count(*) FROM profiles), total achievements, total resumes generated, total LinkedIn posts. Get from Posthog: Day 7 retention, upgrade click rate.",m:"20"}],
+learn:[],
+content:[
+{t:"Write and post 'Vaulty after 30 days' on LinkedIn: exact numbers, what worked, what failed, what surprised you most, and what you are building next. Be completely honest. This is your most important post of the entire 8 weeks.",m:"45"},
+{t:"Post the same data on Instagram as a 5-slide carousel: one stat per slide with honest commentary below. The raw numbers make this content feel real in a way that polished content never can.",m:"25"}]},
+
+{d:55,name:"Saturday",title:"Plan Phase 2",dev:[
+{t:"Open Notion Task Backlog → create new tasks for Phase 2 based on beta + launch feedback. Likely top features: chat-style achievement input, career advisory skill gap analysis, weekly achievement reminder email via Resend.",m:"40"},
+{t:"Prioritize: which one feature would most improve Day 7 retention? Put that one in 'This Week' status. Everything else stays in Backlog.",m:"15"}],
+learn:[{t:"FrontendMasters or YouTube: pick one concept that confused you during the last 8 weeks and finally understand it completely. Async/await, TypeScript generics, SQL joins — whatever was fuzzy.",m:"60"}],
+content:[{t:"Post 'What I am building next for Vaulty' on LinkedIn: the top 3 features requested by users. Show that you listened. Show that you will keep building.",m:"15"}]},
+
+{d:56,name:"Sunday",title:"Reflect + celebrate",dev:[],
+learn:[],
+content:[
+{t:"Write a private reflection — not for posting, just for you: What did you build? What were you most scared of? What would you do differently? What are you most proud of?",m:"30"},
+{t:"You shipped a real app on a real store in 8 weeks while learning the technology simultaneously. That is not a small thing. Take the day completely off. You earned it.",m:"0"}]}
+]}
+];
+
+let checked={};
+let startDay=null;
+
+async function load(){
+  try{
+    if(window.storage){
+      const r=await window.storage.get('vp-v2');
+      if(r)checked=JSON.parse(r.value);
+      const s=await window.storage.get('vp-start');
+      if(s)startDay=new Date(s.value);
+    }
+  }catch(e){}
+}
+
+async function save(id,val){
+  checked[id]=val;
+  try{
+    if(window.storage)await window.storage.set('vp-v2',JSON.stringify(checked));
+  }catch(e){}
+  updateProgress();
+}
+
+function getId(w,d,type,i){return `w${w}d${d}${type}${i}`}
+
+function countWeek(wk){
+  let total=0,done=0;
+  wk.days.forEach(day=>{
+    ['dev','learn','content'].forEach(t=>{
+      (day[t]||[]).forEach((_,i)=>{
+        total++;
+        if(checked[getId(wk.w,day.d,t,i)])done++;
+      });
+    });
+  });
+  return{total,done};
+}
+
+function countAll(){
+  let total=0,done=0;
+  P.forEach(wk=>{const c=countWeek(wk);total+=c.total;done+=c.done;});
+  return{total,done};
+}
+
+function updateProgress(){
+  const{total,done}=countAll();
+  const pct=total?Math.round(done/total*100):0;
+  document.getElementById('total-pct').textContent=pct+'% done';
+  document.getElementById('total-bar').style.width=pct+'%';
+  P.forEach(wk=>{
+    const{total:wt,done:wd}=countWeek(wk);
+    const wp=wt?Math.round(wd/wt*100):0;
+    const bf=document.getElementById('wbar-'+wk.w);
+    const pt=document.getElementById('wpct-'+wk.w);
+    if(bf)bf.style.width=wp+'%';
+    if(pt)pt.textContent=wp+'% complete';
+    wk.days.forEach(day=>{
+      const dayTasks=(['dev','learn','content']).flatMap(t=>(day[t]||[]).map((_,i)=>getId(wk.w,day.d,t,i)));
+      const allDone=dayTasks.length>0&&dayTasks.every(id=>checked[id]);
+      const dc=document.getElementById('dcard-'+wk.w+'-'+day.d);
+      const db=document.getElementById('dbadge-'+wk.w+'-'+day.d);
+      const dact=document.getElementById('dact-'+wk.w+'-'+day.d);
+      const dayDone=dayTasks.filter(id=>checked[id]).length;
+      if(dc){dc.classList.toggle('done-all',allDone);}
+      if(db){db.style.display=allDone?'':'none';}
+      if(dact)dact.textContent=dayDone+' / '+dayTasks.length+' tasks done';
+    });
+  });
+}
+
+function switchWeek(w){
+  document.querySelectorAll('.wsec').forEach(s=>s.classList.remove('on'));
+  document.querySelectorAll('.wtab').forEach(t=>t.classList.remove('on'));
+  document.getElementById('wsec-'+w).classList.add('on');
+  document.getElementById('wtab-'+w).classList.add('on');
+  document.getElementById('wsec-'+w).scrollIntoView({behavior:'smooth',block:'start'});
+}
+
+function toggleDay(w,d){
+  const el=document.getElementById('dcard-'+w+'-'+d);
+  el.classList.toggle('open');
+}
+
+function markAllDay(w,d,day){
+  const ids=(['dev','learn','content']).flatMap(t=>(day[t]||[]).map((_,i)=>getId(w,d,t,i)));
+  const allDone=ids.every(id=>checked[id]);
+  ids.forEach(id=>{
+    checked[id]=!allDone;
+    const cb=document.getElementById('cb-'+id);
+    const item=document.getElementById('item-'+id);
+    if(cb)cb.checked=!allDone;
+    if(item)item.classList.toggle('ck',!allDone);
+  });
+  save(ids[0],!allDone);
+}
+
+function goToday(){
+  if(!startDay){
+    if(confirm('Set today as Day 1 of your journey?')){
+      startDay=new Date();
+      if(window.storage)window.storage.set('vp-start',startDay.toISOString());
+    }else return;
+  }
+  const now=new Date();
+  const diff=Math.floor((now-startDay)/(1000*60*60*24));
+  const dayNum=Math.min(Math.max(diff+1,1),56);
+  let targetW=1,targetD=dayNum;
+  for(let i=0;i<P.length;i++){
+    const days=P[i].days.length;
+    if(targetD<=days){targetW=P[i].w;break;}
+    targetD-=days;
+  }
+  switchWeek(targetW);
+  setTimeout(()=>{
+    const dc=document.getElementById('dcard-'+targetW+'-'+dayNum);
+    if(dc){dc.classList.add('open');dc.scrollIntoView({behavior:'smooth',block:'start'});}
+  },300);
+}
+
+function render(){
+  const tabs=document.getElementById('wtabs');
+  const main=document.getElementById('main');
+  tabs.innerHTML='';
+  main.innerHTML='';
+
+  P.forEach((wk,wi)=>{
+    const tab=document.createElement('button');
+    tab.className='wtab'+(wi===0?' on':'');
+    tab.id='wtab-'+wk.w;
+    tab.textContent='W'+wk.w;
+    tab.onclick=()=>switchWeek(wk.w);
+    tabs.appendChild(tab);
+
+    const sec=document.createElement('div');
+    sec.className='wsec'+(wi===0?' on':'');
+    sec.id='wsec-'+wk.w;
+
+    let html=`<div class="whdr">
+      <div class="wbadge">Week ${wk.w} of 8</div>
+      <div class="wtitle">${wk.theme}</div>
+      <div class="wgoal">${wk.goal}</div>
+      <div class="wbar"><div class="wbar-fill" id="wbar-${wk.w}" style="width:0%"></div></div>
+      <div class="wpct" id="wpct-${wk.w}">0% complete</div>
+    </div>`;
+
+    wk.days.forEach(day=>{
+      const allIds=(['dev','learn','content']).flatMap(t=>(day[t]||[]).map((_,i)=>getId(wk.w,day.d,t,i)));
+      const hasTasks=allIds.length>0;
+
+      html+=`<div class="dcard" id="dcard-${wk.w}-${day.d}">
+        <div class="dhdr" onclick="toggleDay(${wk.w},${day.d})">
+          <div class="dnum">${day.d}</div>
+          <div class="dinfo">
+            <div class="dday">${day.name}</div>
+            <div class="dtitle">${day.title}</div>
+          </div>
+          <div class="dtag" id="dbadge-${wk.w}-${day.d}" style="display:none">✓ Done</div>
+          <div class="dchev">›</div>
+        </div>
+        <div class="dbody">`;
+
+      if(!hasTasks){
+        html+=`<div class="rest">Rest day — recharge for the week ahead.</div>`;
+      }else{
+        const sections=[
+          {key:'dev',label:'Development',cls:'lbl-d'},
+          {key:'learn',label:'Learning',cls:'lbl-l'},
+          {key:'content',label:'Marketing / Content',cls:'lbl-c'}
+        ];
+        sections.forEach(sec=>{
+          const tasks=day[sec.key]||[];
+          if(!tasks.length)return;
+          html+=`<div class="sec-lbl ${sec.cls}">${sec.label}</div><div>`;
+          tasks.forEach((task,i)=>{
+            const id=getId(wk.w,day.d,sec.key,i);
+            const ck=!!checked[id];
+            html+=`<div class="titem${ck?' ck':''}" id="item-${id}">
+              <input type="checkbox" class="tcheck" id="cb-${id}" ${ck?'checked':''} onchange="(function(el,id){checked[id]=el.checked;document.getElementById('item-'+id).classList.toggle('ck',el.checked);save(id,el.checked);})(this,'${id}')">
+              <div class="ttxt">${task.t}</div>
+              ${task.m&&task.m!='0'?`<div class="tmin">${task.m}m</div>`:''}
+            </div>`;
+          });
+          html+='</div>';
+        });
+
+        html+=`<div class="dact">
+          <span class="dact-pct" id="dact-${wk.w}-${day.d}">0 / ${allIds.length} tasks done</span>
+          <button class="btn-all" onclick="markAllDay(${wk.w},${day.d},P[${wi}].days[${wk.days.indexOf(day)}])">Mark all done</button>
+        </div>`;
+      }
+
+      html+='</div></div>';
+    });
+
+    sec.innerHTML=html;
+    main.appendChild(sec);
+  });
+
+  updateProgress();
+}
+
+load().then(render);
+</script>
 </body>
 </html>
