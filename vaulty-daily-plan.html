@@ -533,6 +533,30 @@ let checked={};
 let startDay=null;
 const STORAGE_KEY='vp-v2';
 const START_KEY='vp-start';
+const WINDOW_NAME_PREFIX='vaulty-plan::';
+
+function getWindowNameState(){
+  if(typeof window==='undefined' || !window.name || !window.name.startsWith(WINDOW_NAME_PREFIX))return {};
+  try{
+    return JSON.parse(window.name.slice(WINDOW_NAME_PREFIX.length))||{};
+  }catch(e){
+    return {};
+  }
+}
+
+function readWindowName(key){
+  const state=getWindowNameState();
+  return state?.[key]??null;
+}
+
+function writeWindowName(key,value){
+  try{
+    const next=getWindowNameState();
+    delete next.__all__;
+    next[key]=value;
+    window.name=WINDOW_NAME_PREFIX+JSON.stringify(next);
+  }catch(e){}
+}
 
 function readStorage(key){
   try{
@@ -547,15 +571,18 @@ function writeStorage(key,value){
     if(window.storage)return window.storage.set(key,value);
     if(window.localStorage)window.localStorage.setItem(key,value);
   }catch(e){}
+  writeWindowName(key,value);
   return Promise.resolve();
 }
 
 async function load(){
   try{
     const r=await readStorage(STORAGE_KEY);
-    if(r?.value)checked=JSON.parse(r.value);
+    const checkedValue=r?.value??readWindowName(STORAGE_KEY);
+    if(checkedValue)checked=JSON.parse(checkedValue);
     const s=await readStorage(START_KEY);
-    if(s?.value)startDay=new Date(s.value);
+    const startValue=s?.value??readWindowName(START_KEY);
+    if(startValue)startDay=new Date(startValue);
   }catch(e){}
 }
 
