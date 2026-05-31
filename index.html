@@ -532,21 +532,85 @@ content:[
 let checked={};
 let startDay=null;
 
+const STORAGE_KEY='vp-v2';
+const START_KEY='vp-start';
+const WINDOW_NAME_PREFIX='vaulty-plan::';
+const HASH_PREFIX='vp=';
+
+function getWindowNameState(){
+  if(typeof window==='undefined' || !window.name || !window.name.startsWith(WINDOW_NAME_PREFIX))return {};
+  try{return JSON.parse(window.name.slice(WINDOW_NAME_PREFIX.length))||{};}catch(e){return {};}
+}
+
+function readWindowName(key){
+  const state=getWindowNameState();
+  return state?.[key]??null;
+}
+
+function writeWindowName(key,value){
+  try{
+    const next=getWindowNameState();
+    next[key]=value;
+    window.name=WINDOW_NAME_PREFIX+JSON.stringify(next);
+  }catch(e){}
+}
+
+function readHashState(){
+  try{
+    const hash=window.location.hash.startsWith('#'+HASH_PREFIX)?window.location.hash.slice(HASH_PREFIX.length+1):'';
+    if(!hash)return null;
+    return JSON.parse(decodeURIComponent(hash));
+  }catch(e){
+    return null;
+  }
+}
+
+function writeHashState(state){
+  try{
+    const hash=HASH_PREFIX+encodeURIComponent(JSON.stringify(state));
+    if(window.history&&window.history.replaceState){
+      window.history.replaceState(null,'',window.location.pathname+window.location.search+'#'+hash);
+    }else{
+      window.location.hash='#'+hash;
+    }
+  }catch(e){}
+}
+
+function readStorage(key){
+  try{
+    if(window.storage)return window.storage.get(key);
+    if(window.localStorage)return Promise.resolve({value:window.localStorage.getItem(key)});
+  }catch(e){}
+  return Promise.resolve(null);
+}
+
+function writeStorage(key,value){
+  try{
+    if(window.storage)return window.storage.set(key,value);
+    if(window.localStorage)window.localStorage.setItem(key,value);
+  }catch(e){}
+  writeWindowName(key,value);
+  return Promise.resolve();
+}
+
 async function load(){
   try{
-    if(window.storage){
-      const r=await window.storage.get('vp-v2');
-      if(r)checked=JSON.parse(r.value);
-      const s=await window.storage.get('vp-start');
-      if(s)startDay=new Date(s.value);
-    }
+    const hashState=readHashState()||{};
+    const r=await readStorage(STORAGE_KEY);
+    const checkedValue=r?.value??readWindowName(STORAGE_KEY)??hashState.checked;
+    if(checkedValue)checked=JSON.parse(checkedValue);
+    const s=await readStorage(START_KEY);
+    const startValue=s?.value??readWindowName(START_KEY)??hashState.startDay;
+    if(startValue)startDay=new Date(startValue);
   }catch(e){}
 }
 
 async function save(id,val){
   checked[id]=val;
   try{
-    if(window.storage)await window.storage.set('vp-v2',JSON.stringify(checked));
+    const checkedValue=JSON.stringify(checked);
+    await writeStorage(STORAGE_KEY,checkedValue);
+    writeHashState({checked:checkedValue,startDay:startDay?startDay.toISOString():null});
   }catch(e){}
   updateProgress();
 }
@@ -628,7 +692,8 @@ function goToday(){
   if(!startDay){
     if(confirm('Set today as Day 1 of your journey?')){
       startDay=new Date();
-      if(window.storage)window.storage.set('vp-start',startDay.toISOString());
+      writeStorage(START_KEY,startDay.toISOString());
+      writeHashState({checked:JSON.stringify(checked),startDay:startDay.toISOString()});
     }else return;
   }
   const now=new Date();
