@@ -901,6 +901,11 @@ def main():
     with open(html_path, 'w', encoding='utf-8') as f:
         f.write(html_code)
 
+    # Also write the daily plan HTML so the published site pages stay in sync
+    daily_html_path = os.path.join(OUT_DIR, 'vaulty-daily-plan.html')
+    with open(daily_html_path, 'w', encoding='utf-8') as f:
+      f.write(html_code)
+
     json_size = os.path.getsize(json_path)
     html_size = os.path.getsize(html_path)
 
